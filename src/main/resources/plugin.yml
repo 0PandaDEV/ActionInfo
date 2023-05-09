@@ -1,0 +1,12 @@
+name: '${project.name}'
+version: '${project.version}'
+main: tk.pandadev.actioninfo.Main
+api-version: 1.13
+authors: [ PandaDEV ]
+description: '${project.description}'
+website: https://pandadev.tk
+commands:
+  actioninfo:
+    permission: actioninfo.actioninfo.*
+    aliases:
+      - ai
