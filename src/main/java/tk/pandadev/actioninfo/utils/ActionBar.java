@@ -57,7 +57,7 @@ public class ActionBar {
                             if (!config.getBoolean(player.getUniqueId() + ".cpu") && !config.getBoolean(player.getUniqueId() + ".ram") && !config.getBoolean(player.getUniqueId() + ".tps") && !config.getBoolean(player.getUniqueId() + ".mspt") && !config.getBoolean(player.getUniqueId() + ".ping")) {
                                 config.set(player.getUniqueId() + ".active", false);
                             }
-                            String joinedText = String.join("  ", actionBarText);
+                            String joinedText = String.join("  §8-  ", actionBarText);
                             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(joinedText));
                         }
                     }
@@ -66,8 +66,6 @@ public class ActionBar {
             runnable.runTaskTimer(Main.getInstance(), 0, 20);
         });
     }
-
-
 
     private static String getRAM(){
         Runtime runtime = Runtime.getRuntime();
@@ -100,8 +98,18 @@ public class ActionBar {
     private static String getCPU() {
         OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(
                 OperatingSystemMXBean.class);
-        double cpuUsage = osBean.getSystemCpuLoad();
-        return "§7CPU: §a" + Math.round(cpuUsage * 100) + "%";
+        int cpuUsage = (int) Math.round(osBean.getSystemCpuLoad() * 100);
+
+        String finalCpuUsage = null;
+        if (cpuUsage >= 90) {
+            finalCpuUsage = "§c" + cpuUsage;
+        } else if (cpuUsage >= 60) {
+            finalCpuUsage = "§e" + cpuUsage;
+        } else if (cpuUsage < 60) {
+            finalCpuUsage = "§a" + cpuUsage;
+        }
+
+        return "§7CPU: " + finalCpuUsage + "%";
     }
 
     private static String getTPS() {
@@ -115,7 +123,16 @@ public class ActionBar {
             e.printStackTrace();
         }
 
-        return "§7TPS: §a" + tpsCurrent;
+        String finalTps = null;
+        if (tpsCurrent <= 15) {
+            finalTps = "§c" + tpsCurrent;
+        } else if (tpsCurrent <= 17) {
+            finalTps = "§e" + tpsCurrent;
+        } else if (tpsCurrent > 17) {
+            finalTps = "§a" + tpsCurrent;
+        }
+
+        return "§7TPS: " + finalTps;
     }
 
     private static String getMSPT() {
