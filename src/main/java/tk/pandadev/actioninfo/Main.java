@@ -1,11 +1,11 @@
 package tk.pandadev.actioninfo;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import tk.pandadev.actioninfo.commands.ActionCommand;
 import tk.pandadev.actioninfo.listener.JoinListener;
+import tk.pandadev.actioninfo.utils.ActionBar;
 
 public final class Main extends JavaPlugin {
 
@@ -20,17 +20,29 @@ public final class Main extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage(prefix + "§aEnabled");
 
-        for (Player player : Bukkit.getOnlinePlayers()){
-            if (getConfig().get(player.getUniqueId().toString() + ".active") == null){
-                getConfig().set(player.getUniqueId().toString() + ".active", false);
-                getConfig().set(player.getUniqueId().toString() + ".tps", false);
-                getConfig().set(player.getUniqueId().toString() + ".mspt", false);
-                getConfig().set(player.getUniqueId().toString() + ".cpu", false);
-                getConfig().set(player.getUniqueId().toString() + ".ram", false);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (getConfig().get(player.getUniqueId() + ".active") == null) {
+                getConfig().set(player.getUniqueId() + ".active", false);
+            }
+            if (getConfig().get(player.getUniqueId() + ".tps") == null) {
+                getConfig().set(player.getUniqueId() + ".tps", false);
+            }
+            if (getConfig().get(player.getUniqueId() + ".mspt") == null) {
+                getConfig().set(player.getUniqueId() + ".mspt", false);
+            }
+            if (getConfig().get(player.getUniqueId() + ".cpu") == null) {
+                getConfig().set(player.getUniqueId() + ".cpu", false);
+            }
+            if (getConfig().get(player.getUniqueId() + ".ram") == null) {
+                getConfig().set(player.getUniqueId() + ".ram", false);
+            }
+            if (getConfig().get(player.getUniqueId() + ".ping") == null) {
+                getConfig().set(player.getUniqueId() + ".ping", false);
             }
 
             saveConfig();
         }
+        ActionBar.startActionBar();
 
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
         getCommand("actioninfo").setExecutor(new ActionCommand());
