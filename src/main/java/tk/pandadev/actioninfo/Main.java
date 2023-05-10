@@ -42,7 +42,12 @@ public final class Main extends JavaPlugin {
 
             saveConfig();
         }
-        ActionBar.startActionBar();
+        if (Bukkit.getOnlinePlayers().size() == 0) {
+            ActionBar.stopActionBar();
+        }
+        if (Bukkit.getOnlinePlayers().size() == 1) {
+            ActionBar.startActionBar();
+        }
 
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
         getCommand("actioninfo").setExecutor(new ActionCommand());
