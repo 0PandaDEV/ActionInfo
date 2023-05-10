@@ -7,6 +7,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import tk.pandadev.actioninfo.Main;
+import tk.pandadev.actioninfo.utils.ActionBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class ActionCommand implements CommandExecutor, TabCompleter {
         Player player = (Player) (sender);
 
         if (args.length == 1){
-            if (!args[0].equalsIgnoreCase("tps") && args[0].equalsIgnoreCase("mspt") && args[0].equalsIgnoreCase("ram") && args[0].equalsIgnoreCase("cpu")){
+            if (!args[0].equalsIgnoreCase("tps") && !args[0].equalsIgnoreCase("mspt") && !args[0].equalsIgnoreCase("ram") && !args[0].equalsIgnoreCase("cpu") && !args[0].equalsIgnoreCase("ping")){
                 player.sendMessage(Main.getPrefix() + "§cThe arguments only allow §6tps, mspt, ram and cpu!");
                 return false;
             }
@@ -32,6 +33,9 @@ public class ActionCommand implements CommandExecutor, TabCompleter {
             Main.getInstance().saveConfig();
             if (config.getBoolean(player.getUniqueId() + "." + args[0])){
                 player.sendMessage(Main.getPrefix() + "§a" + args[0] + " §7was activated");
+                if (!config.getBoolean(player.getUniqueId() + ".active")){
+                    player.sendMessage(Main.getPrefix() + "§7Remember turning enabling the actionbar with §a/actioninfo §7or §a/ai");
+                }
             } else {
                 player.sendMessage(Main.getPrefix() + "§a" + args[0] + " §7was deactivated");
             }
@@ -59,6 +63,7 @@ public class ActionCommand implements CommandExecutor, TabCompleter {
             list.add("mspt");
             list.add("ram");
             list.add("cpu");
+            list.add("ping");
         }
 
         ArrayList<String> completerList = new ArrayList<String>();
