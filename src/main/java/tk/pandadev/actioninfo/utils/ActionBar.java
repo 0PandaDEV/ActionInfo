@@ -13,17 +13,16 @@ import tk.pandadev.actioninfo.Main;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-
-import static org.bukkit.Bukkit.getServer;
 
 public class ActionBar {
 
     public static BukkitRunnable runnable;
 
     public static void stopActionBar(){
+        if (runnable == null) {
+            return;
+        }
         runnable.cancel();
     }
 
