@@ -45,7 +45,7 @@ public final class Main extends JavaPlugin {
         if (Bukkit.getOnlinePlayers().size() == 0) {
             ActionBar.stopActionBar();
         }
-        if (Bukkit.getOnlinePlayers().size() == 1) {
+        if (Bukkit.getOnlinePlayers().size() >= 1) {
             ActionBar.startActionBar();
         }
 

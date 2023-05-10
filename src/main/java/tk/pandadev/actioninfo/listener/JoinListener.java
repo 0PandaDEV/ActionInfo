@@ -35,16 +35,18 @@ public class JoinListener implements Listener {
             config.set(player.getUniqueId() + ".ping", false);
         }
         Main.getInstance().saveConfig();
-        if (Bukkit.getOnlinePlayers().size() == 1) {
+        if (Bukkit.getOnlinePlayers().size() >= 1) {
             ActionBar.startActionBar();
         }
     }
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
-        if (Bukkit.getOnlinePlayers().size() == 0) {
-            ActionBar.stopActionBar();
-        }
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+            if (Bukkit.getOnlinePlayers().size() == 0) {
+                ActionBar.stopActionBar();
+            }
+        }, 1);
     }
 
 }
