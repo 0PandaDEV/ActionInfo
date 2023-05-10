@@ -56,6 +56,7 @@ public final class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         instance = null;
+        ActionBar.stopActionBar();
     }
 
     public static Main getInstance() {

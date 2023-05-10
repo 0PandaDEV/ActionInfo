@@ -32,38 +32,39 @@ public class ActionBar {
 
     private static void run() {
         FileConfiguration config = Main.getInstance().getConfig();
-        runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                System.out.println("rendering");
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (config.getBoolean(player.getUniqueId() + ".active")) {
-                        List<String> actionBarText = new ArrayList<>();
-                        if (config.getBoolean(player.getUniqueId() + ".cpu")) {
-                            actionBarText.add(getCPU());
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+            runnable = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        if (config.getBoolean(player.getUniqueId() + ".active")) {
+                            List<String> actionBarText = new ArrayList<>();
+                            if (config.getBoolean(player.getUniqueId() + ".cpu")) {
+                                actionBarText.add(getCPU());
+                            }
+                            if (config.getBoolean(player.getUniqueId() + ".ram")) {
+                                actionBarText.add(getRAM());
+                            }
+                            if (config.getBoolean(player.getUniqueId() + ".tps")) {
+                                actionBarText.add(getTPS());
+                            }
+                            if (config.getBoolean(player.getUniqueId() + ".mspt")) {
+                                actionBarText.add(getMSPT());
+                            }
+                            if (config.getBoolean(player.getUniqueId() + ".ping")) {
+                                actionBarText.add(getPing(player));
+                            }
+                            if (!config.getBoolean(player.getUniqueId() + ".cpu") && !config.getBoolean(player.getUniqueId() + ".ram") && !config.getBoolean(player.getUniqueId() + ".tps") && !config.getBoolean(player.getUniqueId() + ".mspt") && !config.getBoolean(player.getUniqueId() + ".ping")) {
+                                config.set(player.getUniqueId() + ".active", false);
+                            }
+                            String joinedText = String.join("  ", actionBarText);
+                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(joinedText));
                         }
-                        if (config.getBoolean(player.getUniqueId() + ".ram")) {
-                            actionBarText.add(getRAM());
-                        }
-                        if (config.getBoolean(player.getUniqueId() + ".tps")) {
-                            actionBarText.add(getTPS());
-                        }
-                        if (config.getBoolean(player.getUniqueId() + ".mspt")) {
-                            actionBarText.add(getMSPT());
-                        }
-                        if (config.getBoolean(player.getUniqueId() + ".ping")) {
-                            actionBarText.add(getPing(player));
-                        }
-                        if (!config.getBoolean(player.getUniqueId() + ".cpu") && !config.getBoolean(player.getUniqueId() + ".ram") && !config.getBoolean(player.getUniqueId() + ".tps") && !config.getBoolean(player.getUniqueId() + ".mspt") && !config.getBoolean(player.getUniqueId() + ".ping")){
-                            config.set(player.getUniqueId() + ".active", false);
-                        }
-                        String joinedText = String.join("  ", actionBarText);
-                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(joinedText));
                     }
                 }
-            }
-        };
-        runnable.runTaskTimer(Main.getInstance(), 0, 20);
+            };
+            runnable.runTaskTimer(Main.getInstance(), 0, 20);
+        });
     }
 
 
@@ -123,8 +124,8 @@ public class ActionBar {
             org.bukkit.Server server = org.bukkit.Bukkit.getServer();
             Object minecraftServer = server.getClass().getMethod("getServer").invoke(server);
             double[] recentTps = (double[]) minecraftServer.getClass().getField("recentTps").get(minecraftServer);
-            if (recentTps.length > 0 && recentTps[0] > 0.0D) {
-                mspt = Math.round(1000.0D / recentTps[0]);
+            if (recentTps.length > 0 && recentTps[1] > 0.0D) {
+                mspt = recentTps[1];
             }
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException |
                  NoSuchFieldException err) {
@@ -134,7 +135,7 @@ public class ActionBar {
     }
 
     private static String getPing(Player player) {
-        return "§7Ping: §a" + player.getPing();
+        return "§7Ping: §a" + player.getPing() + "ms";
     }
 
 
