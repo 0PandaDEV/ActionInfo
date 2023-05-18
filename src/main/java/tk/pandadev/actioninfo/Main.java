@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import tk.pandadev.actioninfo.commands.ActionCommand;
+import tk.pandadev.actioninfo.commands.ActionGuiCommand;
 import tk.pandadev.actioninfo.listener.JoinListener;
 import tk.pandadev.actioninfo.utils.ActionBar;
 
@@ -51,6 +52,7 @@ public final class Main extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
         getCommand("actioninfo").setExecutor(new ActionCommand());
+        getCommand("actiongui").setExecutor(new ActionGuiCommand());
     }
 
     @Override

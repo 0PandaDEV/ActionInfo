@@ -10,3 +10,7 @@ commands:
     permission: actioninfo.actioninfo.*
     aliases:
       - ai
+  actiongui:
+    permission: actioninfo.actiongui.*
+    aliases:
+      - ag
