@@ -11,7 +11,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import tk.pandadev.actioninfo.Main;
 
 import java.lang.management.ManagementFactory;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,14 +18,14 @@ public class ActionBar {
 
     public static BukkitRunnable runnable;
 
-    public static void stopActionBar(){
+    public static void stopActionBar() {
         if (runnable == null) {
             return;
         }
         runnable.cancel();
     }
 
-    public static void startActionBar(){
+    public static void startActionBar() {
         run();
     }
 
@@ -67,7 +66,7 @@ public class ActionBar {
         });
     }
 
-    private static String getRAM(){
+    private static String getRAM() {
         Runtime runtime = Runtime.getRuntime();
         long maxMemory = runtime.maxMemory();
         long allocatedMemory = runtime.totalMemory();
@@ -136,20 +135,35 @@ public class ActionBar {
     }
 
     private static String getMSPT() {
-        double mspt = 0.0D;
-        try {
-            org.bukkit.Server server = org.bukkit.Bukkit.getServer();
-            Object minecraftServer = server.getClass().getMethod("getServer").invoke(server);
-            double[] recentTps = (double[]) minecraftServer.getClass().getField("recentTps").get(minecraftServer);
-            if (recentTps.length > 0 && recentTps[1] > 0.0D) {
-                mspt = recentTps[1];
+        final long[] lastTime = {System.nanoTime()};
+        final long[] totalElapsedTime = {0};
+        final int[] tickCount = {0};
+        final String[] roundedMspt = {""};
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                long currentTime = System.nanoTime();
+                long elapsedTime = currentTime - lastTime[0];
+                lastTime[0] = currentTime;
+
+                totalElapsedTime[0] += elapsedTime;
+                tickCount[0]++;
+
+                if (tickCount[0] >= 20) {
+                    double mspt = totalElapsedTime[0] / (tickCount[0] * 1000000.0);
+                    totalElapsedTime[0] = 0;
+                    tickCount[0] = 0;
+
+                    roundedMspt[0] = String.format("%.1f", mspt);
+                }
             }
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException |
-                 NoSuchFieldException err) {
-            System.out.println(err);
-        }
-        return "§7MSPT: §a" + mspt;
+        }.runTaskTimer(Main.getInstance(), 0, 1);
+
+        System.out.println(roundedMspt);
+        return "§7MSPT: §a" + roundedMspt[0];
     }
+
 
     private static String getPing(Player player) {
         return "§7Ping: §a" + player.getPing() + "ms";

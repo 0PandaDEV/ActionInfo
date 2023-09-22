@@ -23,16 +23,16 @@ public final class Main extends JavaPlugin {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (getConfig().get(player.getUniqueId() + ".active") == null) {
-                getConfig().set(player.getUniqueId() + ".active", false);
+                getConfig().set(player.getUniqueId() + ".active", true);
             }
             if (getConfig().get(player.getUniqueId() + ".tps") == null) {
-                getConfig().set(player.getUniqueId() + ".tps", false);
+                getConfig().set(player.getUniqueId() + ".tps", true);
             }
             if (getConfig().get(player.getUniqueId() + ".mspt") == null) {
                 getConfig().set(player.getUniqueId() + ".mspt", false);
             }
             if (getConfig().get(player.getUniqueId() + ".cpu") == null) {
-                getConfig().set(player.getUniqueId() + ".cpu", false);
+                getConfig().set(player.getUniqueId() + ".cpu", true);
             }
             if (getConfig().get(player.getUniqueId() + ".ram") == null) {
                 getConfig().set(player.getUniqueId() + ".ram", false);
