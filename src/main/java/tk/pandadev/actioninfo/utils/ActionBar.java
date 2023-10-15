@@ -97,7 +97,7 @@ public class ActionBar {
     private static String getCPU() {
         OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(
                 OperatingSystemMXBean.class);
-        int cpuUsage = (int) Math.round(osBean.getSystemCpuLoad() * 100);
+        int cpuUsage = (int) Math.round(osBean.getProcessCpuLoad() * 100);
 
         String finalCpuUsage = null;
         if (cpuUsage >= 90) {
@@ -134,36 +134,11 @@ public class ActionBar {
         return "§7TPS: " + finalTps;
     }
 
+    public static long oldTicks;
+
     private static String getMSPT() {
-        final long[] lastTime = {System.nanoTime()};
-        final long[] totalElapsedTime = {0};
-        final int[] tickCount = {0};
-        final String[] roundedMspt = {""};
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                long currentTime = System.nanoTime();
-                long elapsedTime = currentTime - lastTime[0];
-                lastTime[0] = currentTime;
-
-                totalElapsedTime[0] += elapsedTime;
-                tickCount[0]++;
-
-                if (tickCount[0] >= 20) {
-                    double mspt = totalElapsedTime[0] / (tickCount[0] * 1000000.0);
-                    totalElapsedTime[0] = 0;
-                    tickCount[0] = 0;
-
-                    roundedMspt[0] = String.format("%.1f", mspt);
-                }
-            }
-        }.runTaskTimer(Main.getInstance(), 0, 1);
-
-        System.out.println(roundedMspt);
-        return "§7MSPT: §a" + roundedMspt[0];
+        return "§7MSPT: §a" + String.valueOf(Main.mspt) + "ms";
     }
-
 
     private static String getPing(Player player) {
         return "§7Ping: §a" + player.getPing() + "ms";

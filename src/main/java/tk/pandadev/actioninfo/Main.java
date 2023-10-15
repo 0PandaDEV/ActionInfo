@@ -3,6 +3,7 @@ package tk.pandadev.actioninfo;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import tk.pandadev.actioninfo.commands.ActionCommand;
 import tk.pandadev.actioninfo.commands.ActionGuiCommand;
 import tk.pandadev.actioninfo.listener.JoinListener;
@@ -13,6 +14,8 @@ public final class Main extends JavaPlugin {
     private static Main instance;
 
     private static final String prefix = "§x§F§F§B§F§0§0§lActionInfo §8» ";
+
+    public static long mspt;
 
     @Override
     public void onEnable() {
@@ -53,6 +56,26 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
         getCommand("actioninfo").setExecutor(new ActionCommand());
         getCommand("actiongui").setExecutor(new ActionGuiCommand());
+
+
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+
+                    long oldTime = System.currentTimeMillis();
+                    Bukkit.getScheduler().runTaskLater(Main.getInstance(), new Runnable() {
+                        @Override
+                        public void run() {
+                            long newTime = System.currentTimeMillis();
+                            mspt = newTime - oldTime;
+                        }
+                    }, 1);
+
+
+                }
+            }.runTaskTimer(Main.getInstance(), 0, 20);
+        });
     }
 
     @Override
@@ -68,4 +91,6 @@ public final class Main extends JavaPlugin {
     public static String getPrefix() {
         return prefix;
     }
+
+
 }
