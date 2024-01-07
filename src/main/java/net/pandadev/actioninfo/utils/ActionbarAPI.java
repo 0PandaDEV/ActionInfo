@@ -1,38 +1,26 @@
-package tk.pandadev.actioninfo.utils;
+package net.pandadev.actioninfo.utils;
 
 import com.sun.management.OperatingSystemMXBean;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.pandadev.actioninfo.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import tk.pandadev.actioninfo.Main;
 
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionBar {
+public class ActionbarAPI {
 
-    public static BukkitRunnable runnable;
+    private static FileConfiguration config = Main.getInstance().getConfig();
 
-    public static void stopActionBar() {
-        if (runnable == null) {
-            return;
-        }
-        runnable.cancel();
-    }
-
-    public static void startActionBar() {
-        run();
-    }
-
-    private static void run() {
-        FileConfiguration config = Main.getInstance().getConfig();
+    public static void task() {
         Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
-            runnable = new BukkitRunnable() {
+            new BukkitRunnable() {
                 @Override
                 public void run() {
                     for (Player player : Bukkit.getOnlinePlayers()) {
@@ -61,8 +49,7 @@ public class ActionBar {
                         }
                     }
                 }
-            };
-            runnable.runTaskTimer(Main.getInstance(), 0, 20);
+            }.runTaskTimer(Main.getInstance(), 0, 20);
         });
     }
 
@@ -93,7 +80,6 @@ public class ActionBar {
         return "§7RAM: §a" + usedMemoryString + "§7/§a" + maxMemoryString;
     }
 
-
     private static String getCPU() {
         OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(
                 OperatingSystemMXBean.class);
@@ -104,7 +90,7 @@ public class ActionBar {
             finalCpuUsage = "§c" + cpuUsage;
         } else if (cpuUsage >= 60) {
             finalCpuUsage = "§e" + cpuUsage;
-        } else if (cpuUsage < 60) {
+        } else {
             finalCpuUsage = "§a" + cpuUsage;
         }
 
@@ -134,8 +120,6 @@ public class ActionBar {
         return "§7TPS: " + finalTps;
     }
 
-    public static long oldTicks;
-
     private static String getMSPT() {
         return "§7MSPT: §a" + String.valueOf(Main.mspt) + "ms";
     }
@@ -143,6 +127,5 @@ public class ActionBar {
     private static String getPing(Player player) {
         return "§7Ping: §a" + player.getPing() + "ms";
     }
-
 
 }
