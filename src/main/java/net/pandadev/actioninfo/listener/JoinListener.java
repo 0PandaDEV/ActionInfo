@@ -1,14 +1,11 @@
-package tk.pandadev.actioninfo.listener;
+package net.pandadev.actioninfo.listener;
 
-import org.bukkit.Bukkit;
+import net.pandadev.actioninfo.Main;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import tk.pandadev.actioninfo.Main;
-import tk.pandadev.actioninfo.utils.ActionBar;
 
 public class JoinListener implements Listener {
 
@@ -35,18 +32,5 @@ public class JoinListener implements Listener {
             config.set(player.getUniqueId() + ".ping", false);
         }
         Main.getInstance().saveConfig();
-        if (Bukkit.getOnlinePlayers().size() >= 1) {
-            ActionBar.startActionBar();
-        }
     }
-
-    @EventHandler
-    public void onLeave(PlayerQuitEvent event) {
-        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-            if (Bukkit.getOnlinePlayers().size() == 0) {
-                ActionBar.stopActionBar();
-            }
-        }, 1);
-    }
-
 }

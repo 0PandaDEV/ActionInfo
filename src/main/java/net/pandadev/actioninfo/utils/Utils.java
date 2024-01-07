@@ -1,4 +1,4 @@
-package tk.pandadev.actioninfo.utils;
+package net.pandadev.actioninfo.utils;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;

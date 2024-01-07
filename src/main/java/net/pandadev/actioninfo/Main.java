@@ -1,13 +1,13 @@
-package tk.pandadev.actioninfo;
+package net.pandadev.actioninfo;
 
+import net.pandadev.actioninfo.commands.ActionCommand;
+import net.pandadev.actioninfo.commands.ActionGuiCommand;
+import net.pandadev.actioninfo.listener.JoinListener;
+import net.pandadev.actioninfo.utils.ActionbarAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import tk.pandadev.actioninfo.commands.ActionCommand;
-import tk.pandadev.actioninfo.commands.ActionGuiCommand;
-import tk.pandadev.actioninfo.listener.JoinListener;
-import tk.pandadev.actioninfo.utils.ActionBar;
 
 public final class Main extends JavaPlugin {
 
@@ -46,12 +46,8 @@ public final class Main extends JavaPlugin {
 
             saveConfig();
         }
-        if (Bukkit.getOnlinePlayers().size() == 0) {
-            ActionBar.stopActionBar();
-        }
-        if (Bukkit.getOnlinePlayers().size() >= 1) {
-            ActionBar.startActionBar();
-        }
+
+        ActionbarAPI.task();
 
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
         getCommand("actioninfo").setExecutor(new ActionCommand());
@@ -81,7 +77,6 @@ public final class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         instance = null;
-        ActionBar.stopActionBar();
     }
 
     public static Main getInstance() {

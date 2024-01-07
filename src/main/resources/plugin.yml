@@ -1,6 +1,6 @@
 name: '${project.name}'
 version: '${project.version}'
-main: tk.pandadev.actioninfo.Main
+main: net.pandadev.actioninfo.Main
 api-version: 1.13
 authors: [ PandaDEV ]
 description: '${project.description}'

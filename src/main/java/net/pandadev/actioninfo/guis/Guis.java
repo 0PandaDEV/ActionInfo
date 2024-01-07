@@ -1,14 +1,14 @@
-package tk.pandadev.actioninfo.guis;
+package net.pandadev.actioninfo.guis;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import net.kyori.adventure.text.Component;
+import net.pandadev.actioninfo.Main;
+import net.pandadev.actioninfo.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import tk.pandadev.actioninfo.Main;
-import tk.pandadev.actioninfo.utils.Utils;
 
 public class Guis {
 
