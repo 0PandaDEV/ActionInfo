@@ -1,11 +1,11 @@
-package tk.pandadev.actioninfo.commands;
+package net.pandadev.actioninfo.commands;
 
+import net.pandadev.actioninfo.Main;
+import net.pandadev.actioninfo.guis.Guis;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import tk.pandadev.actioninfo.Main;
-import tk.pandadev.actioninfo.guis.Guis;
 
 public class ActionGuiCommand implements CommandExecutor {
 
